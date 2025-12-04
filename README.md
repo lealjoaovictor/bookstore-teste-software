@@ -20,14 +20,6 @@ JUnit 5 / Mockito
 
 Selenium (testes funcionais)
 
-📦 Estrutura do Projeto
-src/main/java/com/example/bookstore/
- ├── controller/   → Controllers REST
- ├── model/        → Classes de domínio (10+ entidades)
- ├── repository/   → Repositórios JPA
- ├── service/      → Regras de negócio
- └── dto/          → Objetos de transferência (DTOs)
-
 📘 Funcionalidades Principais
 
 Cadastro de livros, categorias, autores, usuários, pedidos e avaliações
