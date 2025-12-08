@@ -42,6 +42,8 @@ export default function BooksPage() {
                         <th>ISBN</th>
                         <th>Price</th>
                         <th>Stock</th>
+                        <th>Author</th>
+                        <th>Category</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,6 +54,12 @@ export default function BooksPage() {
                             <td>{b.isbn}</td>
                             <td>{b.price}</td>
                             <td>{b.stock}</td>
+
+                            {/* autor pode ser null */}
+                            <td>{b.author?.name || "-"}</td>
+
+                            {/* categoria pode ser null */}
+                            <td>{b.category?.name || "-"}</td>
                         </tr>
                     ))}
                 </tbody>
