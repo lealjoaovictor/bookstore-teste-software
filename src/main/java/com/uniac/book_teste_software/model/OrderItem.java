@@ -1,6 +1,8 @@
 package com.uniac.book_teste_software.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -12,6 +14,7 @@ public class OrderItem {
     private int quantity;
     private double price; // snapshot
     @ManyToOne
+    @JsonIgnore
     private Order order;
 
     public Long getId() {

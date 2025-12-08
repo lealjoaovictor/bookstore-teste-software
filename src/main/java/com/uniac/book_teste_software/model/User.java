@@ -3,6 +3,7 @@ package com.uniac.book_teste_software.model;
 
 import jakarta.persistence.*;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -14,6 +15,7 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Order> orders;
 
     public Set<Order> getOrders() {
