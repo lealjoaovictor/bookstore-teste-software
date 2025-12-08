@@ -1,5 +1,10 @@
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\BookTesteSoftwareApplication.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\config\CorsConfig.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\config\DataInitializer.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\controller\BookController.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\controller\OrderController.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\controller\PaymentController.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\controller\UserController.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\model\Author.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\model\Book.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\model\Cart.java
@@ -10,5 +15,11 @@ C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\model\Review.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\model\Role.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\model\User.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\repository\AuthorRepository.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\repository\BookRepository.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\repository\CategoryRepository.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\repository\OrderItemRepository.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\repository\OrderRepository.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\repository\PaymentRepository.java
+C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\repository\UserRepository.java
 C:\Users\lealj\OneDrive\Documents\GitHub\bookstore-teste-software\src\main\java\com\uniac\book_teste_software\service\BookService.java

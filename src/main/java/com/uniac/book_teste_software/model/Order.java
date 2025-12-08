@@ -1,6 +1,7 @@
 package com.uniac.book_teste_software.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -13,7 +14,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<OrderItem> items;
     private double total;
     private String status; // NEW, PAID, SHIPPED, CANCELLED, DPS CRIAR UM ENUM
