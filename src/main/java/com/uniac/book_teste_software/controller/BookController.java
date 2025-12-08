@@ -2,6 +2,7 @@ package com.uniac.book_teste_software.controller;
 
 import com.uniac.book_teste_software.model.Book;
 import com.uniac.book_teste_software.service.BookService;
+import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class BookController {
      * Lista livros. Se fornecer ?q=texto faz busca por título contendo o texto (case-insensitive).
      */
     @GetMapping
+    @Transactional
     public List<Book> list(@RequestParam(value = "q", required = false) String q) {
         return bookService.search(q);
     }

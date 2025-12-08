@@ -6,6 +6,7 @@ import com.uniac.book_teste_software.repository.OrderRepository;
 import com.uniac.book_teste_software.repository.UserRepository;
 import com.uniac.book_teste_software.repository.BookRepository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,20 +26,35 @@ public class OrderController {
     }
 
     @GetMapping
+    @Transactional
     public List<Order> list() {
-        return orders.findAll();
+        return orders.findAll().stream()
+                .map(o -> {
+                    Order dto = new Order();
+                    dto.setId(o.getId());
+                    dto.setStatus(o.getStatus());
+                    dto.setTotal(o.getTotal());
+                    dto.setItems(o.getItems());
+                    // NÃO incluí user
+                    return dto;
+                })
+                .toList();
+
     }
 
     @PostMapping
     public Order create(@RequestBody Order order) {
 
-        // garantir que o usuário está anexado ao contexto JPA
         var user = users.findById(order.getUser().getId()).orElseThrow();
         order.setUser(user);
 
-        // anexar itens
         if (order.getItems() != null) {
             for (OrderItem item : order.getItems()) {
+
+                if (item.getBook() == null || item.getBook().getId() == null) {
+                    throw new IllegalArgumentException("OrderItem precisa ter book.id");
+                }
+
                 var book = books.findById(item.getBook().getId()).orElseThrow();
                 item.setBook(book);
                 item.setOrder(order);
@@ -47,4 +63,5 @@ public class OrderController {
 
         return orders.save(order);
     }
+
 }

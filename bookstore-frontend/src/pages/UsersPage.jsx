@@ -12,6 +12,7 @@ export default function UsersPage(){
     try{
       setLoading(true)
       const data = await api.getUsers()
+      console.log("USERS FROM USERS PAGE:", data)
       setUsers(data)
     }catch(e){
       setError(String(e))

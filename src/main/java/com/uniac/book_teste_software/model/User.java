@@ -1,6 +1,7 @@
 package com.uniac.book_teste_software.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,9 +15,11 @@ public class User {
     private String username;
     private String email;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore // mantém o ignore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<Order> orders;
+
 
     public Set<Order> getOrders() {
         return orders;

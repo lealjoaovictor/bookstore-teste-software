@@ -1,6 +1,7 @@
 package com.uniac.book_teste_software.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -10,7 +11,8 @@ public class Author {
     @Id @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Book> books;
 
     public Long getId() {

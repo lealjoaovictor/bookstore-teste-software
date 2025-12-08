@@ -1,10 +1,12 @@
 package com.uniac.book_teste_software.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Payment {
     @Id @GeneratedValue
     private Long id;

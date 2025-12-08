@@ -1,6 +1,7 @@
 package com.uniac.book_teste_software.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 
@@ -14,11 +15,12 @@ public class Book {
     private int stock;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Author author;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"books"})
     private Category category;
 
     public Author getAuthor() {
