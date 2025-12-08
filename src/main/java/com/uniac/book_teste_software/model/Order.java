@@ -11,6 +11,7 @@ public class Order {
     @Id @GeneratedValue
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderItem> items;
