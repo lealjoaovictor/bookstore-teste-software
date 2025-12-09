@@ -10,16 +10,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id @GeneratedValue
     private Long id;
+
     private String username;
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore // mantém o ignore
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<Order> orders;
-
 
     public Set<Order> getOrders() {
         return orders;

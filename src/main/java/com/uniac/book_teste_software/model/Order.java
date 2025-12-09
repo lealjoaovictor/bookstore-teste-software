@@ -11,21 +11,24 @@ import java.util.Set;
 @Entity
 @Table(name = "orders")
 public class Order {
+
     @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"orders"}) // <- evita recursão se existir o campo
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"orders"})
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @JsonIgnoreProperties({"order"})
     private Set<OrderItem> items;
-    private double total;
-    private String status; // NEW, PAID, SHIPPED, CANCELLED, DPS CRIAR UM ENUM
 
-    @JsonIgnore
+    private double total;
+    private String status;
+
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Payment payment;
 
     private String couponCode;

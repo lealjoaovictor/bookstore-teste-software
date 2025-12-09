@@ -4,12 +4,18 @@ import * as ordersApi from '../api/orders'
 import * as couponsApi from '../api/coupons'
 import { getBooks } from '../api/books'
 
-export default function OrdersPage() {
+import CreateOrder from '../components/CreateOrder'
+import OrderDetails from "../components/OrderDetails";
+
+export default function OrdersPage({ onNavigate, onSelectOrder }) {
   const [users, setUsers] = useState([])
   const [orders, setOrders] = useState([])
   const [coupons, setCoupons] = useState([])
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const [selectedUser, setSelectedUser] = useState('')
+  const [selectedOrder, setSelectedOrder] = useState(null)
 
   async function load() {
     setLoading(true)
@@ -21,13 +27,15 @@ export default function OrdersPage() {
         getBooks()
       ])
 
-      setUsers(u)
-      setOrders(o)
-      setCoupons(c)
-      setBooks(b)
+      console.log("📌 ORDERS:", o)
+
+      setUsers(u || [])
+      setOrders(o || [])
+      setCoupons(c || [])
+      setBooks(b || [])
 
     } catch (e) {
-      console.error(e)
+      console.error("❌ ERRO NO LOAD()", e)
     } finally {
       setLoading(false)
     }
@@ -35,23 +43,60 @@ export default function OrdersPage() {
 
   useEffect(() => { load() }, [])
 
+  const filteredOrders = selectedUser
+    ? orders.filter(o => {
+        const orderUserId = o?.user?.id ?? null
+        return String(orderUserId) === String(selectedUser)
+      })
+    : orders
+
   return (
     <div>
-      <CreateOrder users={users} coupons={coupons} books={books} onCreated={load} />
+      <CreateOrder
+        users={users}
+        coupons={coupons}
+        books={books}
+        onCreated={load}
+      />
 
-      <div className="card mt-4">
+      <div className="card mt-4 mb-3">
+        <label className="small font-medium">Filtrar por usuário:</label>
+
+        <select
+          className="input mt-1"
+          value={selectedUser}
+          onChange={e => setSelectedUser(e.target.value)}
+        >
+          <option value="">-- Todos --</option>
+          {users.map(u => (
+            <option key={u.id} value={String(u.id)}>
+              {u.username || u.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="card">
         <h3 className="text-lg font-semibold mb-2">Orders</h3>
 
         {loading ? (
           <div className="small">Loading...</div>
+        ) : filteredOrders.length === 0 ? (
+          <div className="small text-gray-500">
+            Nenhuma order encontrada para este usuário.
+          </div>
         ) : (
           <ul>
-            {orders.map(ord => (
-              <li key={ord.id} className="border-b py-2">
+            {filteredOrders.map(ord => (
+              <li
+                key={ord.id}
+                className="border-b py-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => setSelectedOrder(ord.id)}
+              >
                 <div className="flex justify-between">
                   <div>
                     <div className="font-medium">
-                      Order #{ord.id} — {ord.user?.username || ord.user?.name || '—'}
+                      Order #{ord.id} — {ord.user?.username || '—'}
                     </div>
 
                     <div className="small text-gray-500">
@@ -68,174 +113,13 @@ export default function OrdersPage() {
           </ul>
         )}
       </div>
+
+      {selectedOrder && (
+        <OrderDetails
+          orderId={selectedOrder}
+          onClose={() => setSelectedOrder(null)}
+        />
+      )}
     </div>
-  )
-}
-
-function CreateOrder({ users, coupons, books, onCreated }) {
-  const [userId, setUserId] = useState('')
-  const [items, setItems] = useState([])
-  const [bookId, setBookId] = useState('')
-  const [qty, setQty] = useState(1)
-  const [total, setTotal] = useState(0)
-  const [coupon, setCoupon] = useState("")
-
-  useEffect(() => {
-    const t = items.reduce((s, it) => s + (it.price || 0) * it.quantity, 0)
-    setTotal(t)
-  }, [items])
-
-  function addItem() {
-    if (!bookId || qty <= 0) return
-
-    const book = books.find(b => b.id === Number(bookId))
-    if (!book) return
-
-    const newItem = {
-      book: { id: book.id },
-      title: book.title,
-      quantity: Number(qty),
-      price: book.price
-    }
-
-    setItems(prev => [...prev, newItem])
-    setBookId('')
-    setQty(1)
-  }
-
-  async function submit(e) {
-    e.preventDefault()
-    if (!userId) {
-      alert('Select a user')
-      return
-    }
-
-    if (items.length === 0) {
-      alert('Add at least one item')
-      return
-    }
-
-    const payload = {
-      user: { id: Number(userId) },
-      items: items.map(it => ({ book: it.book, quantity: it.quantity })),
-      total,
-      status: 'NEW',
-      couponCode: coupon || null
-    }
-
-    try {
-      await ordersApi.createOrder(payload)
-      // reset form
-      setItems([])
-      setTotal(0)
-      setUserId('')
-      setCoupon("")
-      onCreated && onCreated()
-    } catch (err) {
-      console.error("Failed to create order", err)
-      alert("Failed to create order")
-    }
-  }
-
-  return (
-    <form className="card" onSubmit={submit}>
-      <h3 className="text-lg font-semibold mb-2">Create Order</h3>
-
-      {/* Selecionar usuário */}
-      <div className="mb-2">
-        <select
-          className="input"
-          value={userId}
-          onChange={e => setUserId(e.target.value)}
-        >
-          <option value="">-- Select user --</option>
-          {users.map(u => (
-            <option key={u.id} value={u.id}>
-              {u.username || u.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Cupom */}
-      <div className="mb-2">
-        <label className="small font-medium">Cupom de desconto:</label>
-        <select
-          className="input mt-1"
-          value={coupon}
-          onChange={e => setCoupon(e.target.value)}
-        >
-          <option value="">-- Nenhum --</option>
-          {coupons.map(c => (
-            <option key={c.id} value={c.code}>
-              {c.code} ({c.type})
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Adicionar itens */}
-      <div className="mb-2">
-        <div className="flex gap-2">
-          <select
-            className="input"
-            value={bookId}
-            onChange={e => setBookId(e.target.value)}
-          >
-            <option value="">-- Select book --</option>
-            {books.map(b => (
-              <option key={b.id} value={b.id}>
-                {b.title} — R$ {b.price}
-              </option>
-            ))}
-          </select>
-          <input
-            className="input"
-            type="number"
-            min="1"
-            style={{ width: 80 }}
-            value={qty}
-            onChange={e => setQty(e.target.value)}
-          />
-          <button
-            type="button"
-            className="button btn-primary"
-            onClick={addItem}
-          >
-            Add
-          </button>
-        </div>
-      </div>
-
-      {/* Lista de itens */}
-      <div className="mb-2">
-        <div className="small font-medium">Items</div>
-        {items.length === 0 ? (
-          <div className="small text-gray-500">No items</div>
-        ) : (
-          <ul className="mt-2">
-            {items.map((it, i) => (
-              <li key={i} className="flex justify-between py-1">
-                <div>{it.title} × {it.quantity}</div>
-                <div className="small text-gray-500">
-                  R$ {(it.price * it.quantity).toFixed(2)}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* Total */}
-      <div className="mb-2 flex items-center justify-between">
-        <div>
-          Total: <span className="font-semibold">R$ {total.toFixed(2)}</span>
-        </div>
-
-        <button className="button btn-success" type="submit">
-          Create Order
-        </button>
-      </div>
-    </form>
   )
 }

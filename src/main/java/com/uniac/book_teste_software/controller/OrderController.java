@@ -95,4 +95,9 @@ public class OrderController {
         return orders.save(order);
     }
 
+    @GetMapping("/{id}")
+    public Order getById(@PathVariable Long id) {
+        return orders.findById(id).orElseThrow();
+    }
+
 }

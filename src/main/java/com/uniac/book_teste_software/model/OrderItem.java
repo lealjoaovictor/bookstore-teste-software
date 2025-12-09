@@ -1,27 +1,26 @@
 package com.uniac.book_teste_software.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
 @Entity
 public class OrderItem {
-    @Id
-    @GeneratedValue
+
+    @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"author", "category", "stock"})
     private Book book;
 
     private int quantity;
-    private double price; // snapshot
+    private double price;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
+    @JsonIgnoreProperties({"items"})
     private Order order;
 
     public Long getId() {

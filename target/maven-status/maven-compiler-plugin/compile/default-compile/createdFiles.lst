@@ -14,6 +14,7 @@ com\uniac\book_teste_software\model\OrderItem.class
 com\uniac\book_teste_software\service\BookService.class
 com\uniac\book_teste_software\model\Book.class
 com\uniac\book_teste_software\config\DataInitializer.class
+com\uniac\book_teste_software\controller\CouponController.class
 com\uniac\book_teste_software\model\Review.class
 com\uniac\book_teste_software\controller\BookController$RecommendRequest.class
 com\uniac\book_teste_software\controller\UserController.class
