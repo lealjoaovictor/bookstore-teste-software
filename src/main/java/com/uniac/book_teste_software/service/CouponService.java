@@ -1,8 +1,6 @@
 package com.uniac.book_teste_software.service;
 
-import com.uniac.book_teste_software.model.Coupon;
 import com.uniac.book_teste_software.model.Order;
-import com.uniac.book_teste_software.model.OrderItem;
 import com.uniac.book_teste_software.repository.CouponRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ public class CouponService {
 
         code = code.trim().toUpperCase();
 
-        double subtotal = order.getSubtotal();
+        double subtotal = order.getTotal();
         double discount = 0;
 
         discount += applyBasicCoupons(code, subtotal);
@@ -29,96 +27,78 @@ public class CouponService {
         return discount;
     }
 
-
-
-    // ============================================================
-    //  BLOCO 1 — regras básicas (dos IF 1 a 5)
-    // ============================================================
     private double applyBasicCoupons(String code, double subtotal) {
         double d = 0;
 
-        if (code.equals("X2")) {
-            d += subtotal * 0.02;
+        if (code.equals("X2")) { // 1
+            d += subtotal * 0.02; // 2
         }
-        if (code.equals("X4")) {
-            d += subtotal * 0.04;
+        if (code.equals("X4")) { // 3
+            d += subtotal * 0.04; // 4
         }
-        if (code.equals("X6")) {
-            d += subtotal * 0.06;
+        if (code.equals("X6")) { // 5
+            d += subtotal * 0.06; // 6
         }
-        if (code.equals("X8")) {
-            d += subtotal * 0.08;
+        if (code.equals("X8")) { // 7
+            d += subtotal * 0.08; // 8
         }
-        if (code.equals("X10")) {
-            d += subtotal * 0.10;
+        if (code.equals("X10")) { // 9
+            d += subtotal * 0.10; // 10
         }
-        if (code.equals("Y5")) {
-            d += 5;
+        if (code.equals("Y5")) { // 11
+            d += 5; // 12
         }
-        if (code.equals("Y10")) {
-            d += 10;
+        if (code.equals("Y10")) { // 13
+            d += 10; // 14
         }
-        if (code.equals("Y15")) {
-            d += 15;
+        if (code.equals("Y15")) { // 15
+            d += 15; // 16
         }
-        if (code.equals("FLAT20")) {
-            d += 20;
+        if (code.equals("FLAT20")) { // 17
+            d += 20; // 18
         }
-        if (code.equals("FLAT50")) {
-            d += 50;
+        if (code.equals("FLAT50")) { // 19
+            d += 50; // 20
         }
 
-        return d;
+        return d; // 21
     }
 
+    private double applyAdvancedCoupons(String code, double subtotal) {
+        double d = 0;
 
-    // ============================================================
-    //  BLOCO 2 — regras especiais (dos IF 6 a 10)
-    // ============================================================
-    private double applySpecialRules(Order order, Coupon c, double subtotal) {
-        double discount = 0;
-
-        int qty = order.getItems().stream()
-                .mapToInt(i -> i.getQuantity())
-                .sum();
-
-        // if 6 — DOIDO50
-        if (qty > 5 && c.getCode().startsWith("DOIDO50")) {
-            discount += subtotal * 0.50;
+        if (code.startsWith("MEGA")) { // 1
+            d += subtotal * 0.12; // 2
+        }
+        if (code.startsWith("SUPER")) { // 3
+            d += subtotal * 0.15; // 4
+        }
+        if (code.equals("BONUS5")) { // 5
+            d += 5; // 6
+        }
+        if (code.equals("BONUS10")) { // 7
+            d += 10; // 8
+        }
+        if (code.equals("BONUS20")) { // 9
+            d += 20; // 10
+        }
+        if (code.equals("PERCENT5")) { // 11
+            d += subtotal * 0.05; // 12
+        }
+        if (code.equals("PERCENT7")) { // 13
+            d += subtotal * 0.07; // 14
+        }
+        if (code.equals("PERCENT9")) { // 15
+            d += subtotal * 0.09; // 16
+        }
+        if (code.equals("VIP")) {// 17
+            d += subtotal * 0.13; // 18
+        }
+        if (code.equals("PLATINUM")) { // 19
+            d += subtotal * 0.20; // 20
         }
 
-        // if 7 — VIP30
-        if (c.getCode().equals("VIP30")) {
-            if (order.getUser().getEmail().contains("premium")) {
-                discount += subtotal * 0.30;
-            } else {
-                discount -= 8;
-            }
-        }
-
-        // if 8 — FRETEGRATIS
-        if (c.getCode().startsWith("FRETEGRATIS")) {
-            discount += 15;
-        }
-
-        // if 9 — IMPORT20
-        if (c.getCode().equals("IMPORT20")) {
-            boolean imported = order.getItems().stream()
-                    .anyMatch(i -> i.getBook().getTitle().contains("(Imported)"));
-            if (imported) {
-                discount += subtotal * 0.20;
-            }
-        }
-
-        // if 10 — QUASELA
-        if (c.getCode().startsWith("QUASELA")) {
-            if (subtotal > 250) {
-                discount += 40;
-            } else {
-                discount -= 20;
-            }
-        }
-
-        return discount;
+        return d; // 21
     }
+
 }

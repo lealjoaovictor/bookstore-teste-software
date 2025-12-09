@@ -175,109 +175,38 @@ public class DataInitializer {
             if (coupons.count() == 0) {
 
                 Coupon c1 = new Coupon();
-                c1.setCode("DESCONTO10");
-                c1.setDiscountPercent(10.0);
-                c1.setDiscountValue(0);
-                c1.setOnlyFirstPurchase(false);
-                c1.setRequiresMinValue(false);
-                c1.setMinValue(0);
-                c1.setCategorySpecific(false);
-                c1.setCategoryName(null);
+                c1.setCode("X2");
 
                 Coupon c2 = new Coupon();
-                c2.setCode("FRETEGRATIS");
-                c2.setDiscountPercent(0);
-                c2.setDiscountValue(15.0);
-                c2.setOnlyFirstPurchase(false);
-                c2.setRequiresMinValue(false);
-                c2.setMinValue(0);
-                c2.setCategorySpecific(false);
-                c2.setCategoryName(null);
+                c2.setCode("X4");
 
                 Coupon c3 = new Coupon();
-                c3.setCode("PRIMEIRA");
-                c3.setDiscountPercent(20.0);
-                c3.setDiscountValue(0);
-                c3.setOnlyFirstPurchase(true);
-                c3.setRequiresMinValue(false);
-                c3.setMinValue(0);
-                c3.setCategorySpecific(false);
-                c3.setCategoryName(null);
+                c3.setCode("X6");
 
                 Coupon c4 = new Coupon();
-                c4.setCode("PROG10");
-                c4.setDiscountPercent(10.0);
-                c4.setDiscountValue(0);
-                c4.setOnlyFirstPurchase(false);
-                c4.setRequiresMinValue(false);
-                c4.setMinValue(0);
-                c4.setCategorySpecific(true);
-                c4.setCategoryName("Programming");
+                c4.setCode("X8");
 
                 Coupon c5 = new Coupon();
-                c5.setCode("VALOR100");
-                c5.setDiscountPercent(5.0);
-                c5.setDiscountValue(0);
-                c5.setOnlyFirstPurchase(false);
-                c5.setRequiresMinValue(true);
-                c5.setMinValue(100);
-                c5.setCategorySpecific(false);
-                c5.setCategoryName(null);
+                c5.setCode("X10");
 
                 Coupon c6 = new Coupon();
-                c6.setCode("VIP30");
-                c6.setDiscountPercent(30.0);
-                c6.setDiscountValue(0);
-                c6.setOnlyFirstPurchase(false);
-                c6.setRequiresMinValue(false);
-                c6.setMinValue(0);
-                c6.setCategorySpecific(false);
-                c6.setCategoryName(null);
+                c6.setCode("Y5");
 
                 Coupon c7 = new Coupon();
-                c7.setCode("FIXO20");
-                c7.setDiscountPercent(0);
-                c7.setDiscountValue(20.0);
-                c7.setOnlyFirstPurchase(false);
-                c7.setRequiresMinValue(false);
-                c7.setMinValue(0);
-                c7.setCategorySpecific(false);
-                c7.setCategoryName(null);
+                c7.setCode("Y10");
 
                 Coupon c8 = new Coupon();
-                c8.setCode("IMPORT20");
-                c8.setDiscountPercent(20.0);
-                c8.setDiscountValue(0);
-                c8.setOnlyFirstPurchase(false);
-                c8.setRequiresMinValue(false);
-                c8.setMinValue(0);
-                c8.setCategorySpecific(true);
-                c8.setCategoryName("Imported");
+                c8.setCode("Y15");
 
                 Coupon c9 = new Coupon();
-                c9.setCode("QUASELA");
-                c9.setDiscountPercent(0);
-                c9.setDiscountValue(40.0);
-                c9.setOnlyFirstPurchase(false);
-                c9.setRequiresMinValue(true);
-                c9.setMinValue(250);
-                c9.setCategorySpecific(false);
-                c9.setCategoryName(null);
+                c9.setCode("FLAT20");
 
                 Coupon c10 = new Coupon();
-                c10.setCode("DOIDO50");
-                c10.setDiscountPercent(50.0);
-                c10.setDiscountValue(0);
-                c10.setOnlyFirstPurchase(false);
-                c10.setRequiresMinValue(false);
-                c10.setMinValue(0);
-                c10.setCategorySpecific(false);
-                c10.setCategoryName(null);
+                c10.setCode("FLAT50");
+
 
                 coupons.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10));
             }
-
-
 
             System.out.println("✅ Inicialização concluída!");
         };

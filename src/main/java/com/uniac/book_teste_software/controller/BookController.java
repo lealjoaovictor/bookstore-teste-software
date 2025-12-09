@@ -52,20 +52,4 @@ public class BookController {
         return bookService.save(book);
     }
 
-    @PostMapping("/recommend")
-    public List<Book> recommend(@RequestBody RecommendRequest req) {
-        return bookService.recommend(
-                req.purchasedBookIds,
-                req.minPrice,
-                req.maxPrice,
-                req.preferredCategory
-        );
-    }
-
-    public static class RecommendRequest {
-        public java.util.List<Long> purchasedBookIds;
-        public Double minPrice;
-        public Double maxPrice;
-        public String preferredCategory;
-    }
 }
