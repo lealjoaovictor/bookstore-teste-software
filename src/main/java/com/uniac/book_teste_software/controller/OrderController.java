@@ -10,6 +10,7 @@ import com.uniac.book_teste_software.service.CouponService;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -48,22 +49,27 @@ public class OrderController {
     @PostMapping
     public Order create(@RequestBody Order order) {
 
+        // inicializa items se estiver null
+        if (order.getItems() == null) {
+            order.setItems(new HashSet<>());
+        }
+
         // carregar usuário
-        var user = users.findById(order.getUser().getId()).orElseThrow();
+        var user = users.findById(order.getUser().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
         order.setUser(user);
 
         // carregar itens com seus livros reais
-        if (order.getItems() != null) {
-            for (OrderItem item : order.getItems()) {
+        for (OrderItem item : order.getItems()) {
 
-                if (item.getBook() == null || item.getBook().getId() == null) {
-                    throw new IllegalArgumentException("OrderItem precisa ter book.id");
-                }
-
-                var book = books.findById(item.getBook().getId()).orElseThrow();
-                item.setBook(book);
-                item.setOrder(order);
+            if (item.getBook() == null || item.getBook().getId() == null) {
+                throw new IllegalArgumentException("OrderItem precisa ter book.id");
             }
+
+            var book = books.findById(item.getBook().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado: " + item.getBook().getId()));
+            item.setBook(book);
+            item.setOrder(order);
         }
 
         // ================================

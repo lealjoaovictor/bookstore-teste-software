@@ -10,15 +10,19 @@ public class Coupon {
     private Long id;
 
     private String code;
-    private double discountValue; // valor fixo
-    private double discountPercent; // desconto percentual
+    private Double discountValue; // valor fixo
+    private Double discountPercent; // desconto percentual
     private boolean onlyFirstPurchase;
     private boolean requiresMinValue;
-    private double minValue;
+    private Double minValue;
     private boolean categorySpecific;
     private String categoryName;
 
-
+    public Coupon(String code, Double discountPercent, Double discountValue) {
+        this.code = code;
+        this.discountPercent = discountPercent;
+        this.discountValue = discountValue;
+    }
 
     public Coupon() {}
 
