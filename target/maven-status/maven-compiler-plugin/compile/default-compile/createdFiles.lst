@@ -1,5 +1,6 @@
 com\uniac\book_teste_software\model\Category.class
 com\uniac\book_teste_software\model\Payment.class
+com\uniac\book_teste_software\service\CouponService.class
 com\uniac\book_teste_software\controller\CategoryController.class
 com\uniac\book_teste_software\model\Cart.class
 com\uniac\book_teste_software\model\Order.class
@@ -7,6 +8,7 @@ com\uniac\book_teste_software\model\Author.class
 com\uniac\book_teste_software\repository\PaymentRepository.class
 com\uniac\book_teste_software\model\User.class
 com\uniac\book_teste_software\controller\BookController.class
+com\uniac\book_teste_software\repository\CouponRepository.class
 com\uniac\book_teste_software\config\CorsConfig$1.class
 com\uniac\book_teste_software\model\OrderItem.class
 com\uniac\book_teste_software\service\BookService.class
@@ -25,4 +27,6 @@ com\uniac\book_teste_software\controller\PaymentController.class
 com\uniac\book_teste_software\controller\OrderController.class
 com\uniac\book_teste_software\model\Role.class
 com\uniac\book_teste_software\repository\AuthorRepository.class
+com\uniac\book_teste_software\controller\AuthorController.class
 com\uniac\book_teste_software\repository\CategoryRepository.class
+com\uniac\book_teste_software\model\Coupon.class

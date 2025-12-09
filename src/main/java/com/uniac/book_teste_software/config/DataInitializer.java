@@ -19,7 +19,8 @@ public class DataInitializer {
             UserRepository users,
             OrderRepository orders,
             OrderItemRepository orderItems,
-            PaymentRepository payments
+            PaymentRepository payments,
+            CouponRepository coupons
     ) {
         return args -> {
 
@@ -168,6 +169,36 @@ public class DataInitializer {
                 orders.save(o2);
 
                 System.out.println("🛒 Orders de teste criadas com sucesso!");
+            }
+
+            if (coupons.count() == 0) {
+
+                Coupon c1  = new Coupon("DESCONTO10", 10, null);
+                Coupon c2  = new Coupon("FRETEGRATIS", null, 15);
+                Coupon c3  = new Coupon("PRIMEIRA", 20, null); c3.setOnlyFirstPurchase(true);
+
+                Coupon c4  = new Coupon("PROG10", 10, null);
+                c4.setCategorySpecific(true);
+                c4.setCategoryName("Programming");
+
+                Coupon c5  = new Coupon("VALOR100", 5, null);
+                c5.setRequiresMinValue(true);
+                c5.setMinValue(100);
+
+                Coupon c6  = new Coupon("VIP30", 30, null);
+                Coupon c7  = new Coupon("FIXO20", null, 20);
+
+                Coupon c8  = new Coupon("IMPORT20", 20, null);
+                c8.setCategorySpecific(true);
+                c8.setCategoryName("Imported");
+
+                Coupon c9  = new Coupon("QUASELA", null, 40);
+                c9.setRequiresMinValue(true);
+                c9.setMinValue(250);
+
+                Coupon c10 = new Coupon("DOIDO50", 50, null);
+
+                coupons.saveAll(List.of(c1,c2,c3,c4,c5,c6,c7,c8,c9,c10));
             }
 
             System.out.println("✅ Inicialização concluída!");

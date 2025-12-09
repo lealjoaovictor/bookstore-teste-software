@@ -6,6 +6,7 @@ import com.uniac.book_teste_software.repository.OrderRepository;
 import com.uniac.book_teste_software.repository.UserRepository;
 import com.uniac.book_teste_software.repository.BookRepository;
 
+import com.uniac.book_teste_software.service.CouponService;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +19,13 @@ public class OrderController {
     private final OrderRepository orders;
     private final UserRepository users;
     private final BookRepository books;
+    private final CouponService couponService;
 
-    public OrderController(OrderRepository orders, UserRepository users, BookRepository books) {
+    public OrderController(OrderRepository orders, UserRepository users, BookRepository books, CouponService couponService) {
         this.orders = orders;
         this.users = users;
         this.books = books;
+        this.couponService = couponService;
     }
 
     @GetMapping
@@ -45,9 +48,11 @@ public class OrderController {
     @PostMapping
     public Order create(@RequestBody Order order) {
 
+        // carregar usuário
         var user = users.findById(order.getUser().getId()).orElseThrow();
         order.setUser(user);
 
+        // carregar itens com seus livros reais
         if (order.getItems() != null) {
             for (OrderItem item : order.getItems()) {
 
@@ -61,6 +66,26 @@ public class OrderController {
             }
         }
 
+        // ================================
+        // CALCULA SUBTOTAL
+        // ================================
+        double subtotal = order.getItems().stream()
+                .mapToDouble(i -> i.getBook().getPrice() * i.getQuantity())
+                .sum();
+
+        // ================================
+        // APLICA CUPOM
+        // ================================
+        double discount = couponService.applyCoupon(order, order.getCouponCode());
+
+        // ================================
+        // CALCULA TOTAL FINAL
+        // ================================
+        double finalValue = Math.max(0, subtotal - discount);
+
+        order.setTotal(finalValue);
+
+        // salva o pedido com o preço final
         return orders.save(order);
     }
 

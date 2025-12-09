@@ -6,12 +6,13 @@ export async function getOrders(){
   return res.json()
 }
 
-export async function createOrder(data){
-  const res = await fetch(`${API_BASE}/orders`, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(data)
-  })
-  if(!res.ok) throw new Error('Failed to create order')
-  return res.json()
+export async function createOrder(order) {
+  const res = await fetch("http://localhost:8080/api/orders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(order),
+  });
+
+  if (!res.ok) throw new Error("Failed to create order");
+  return res.json();
 }

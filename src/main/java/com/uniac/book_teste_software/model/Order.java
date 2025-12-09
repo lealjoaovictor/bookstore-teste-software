@@ -28,7 +28,7 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL)
     private Payment payment;
 
-
+    private String couponCode;
 
     public Long getId() {
         return id;
@@ -76,5 +76,13 @@ public class Order {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
     }
 }
