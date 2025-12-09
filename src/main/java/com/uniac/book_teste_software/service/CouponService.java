@@ -16,70 +16,78 @@ public class CouponService {
     }
 
     public double applyCoupon(Order order, String code) {
+        if (code == null) return 0;
 
-        if (code == null || code.isBlank()) return 0;
+        code = code.trim().toUpperCase();
 
-        double subtotal = order.getItems().stream()
-                .mapToDouble(i -> i.getBook().getPrice() * i.getQuantity())
-                .sum();
-
-        var couponOpt = coupons.findByCode(code);
-        if (couponOpt.isEmpty()) return 0;
-
-        Coupon c = couponOpt.get();
-
+        double subtotal = order.getSubtotal();
         double discount = 0;
 
-        // if 1 — cupom percentual simples
-        if (c.getDiscountPercent() > 0 && !c.isOnlyFirstPurchase()) {
-            discount += subtotal * (c.getDiscountPercent() / 100.0);
+        discount += applyBasicCoupons(code, subtotal);
+        discount += applyAdvancedCoupons(code, subtotal);
+
+        return discount;
+    }
+
+
+
+    // ============================================================
+    //  BLOCO 1 — regras básicas (dos IF 1 a 5)
+    // ============================================================
+    private double applyBasicCoupons(String code, double subtotal) {
+        double d = 0;
+
+        if (code.equals("X2")) {
+            d += subtotal * 0.02;
+        }
+        if (code.equals("X4")) {
+            d += subtotal * 0.04;
+        }
+        if (code.equals("X6")) {
+            d += subtotal * 0.06;
+        }
+        if (code.equals("X8")) {
+            d += subtotal * 0.08;
+        }
+        if (code.equals("X10")) {
+            d += subtotal * 0.10;
+        }
+        if (code.equals("Y5")) {
+            d += 5;
+        }
+        if (code.equals("Y10")) {
+            d += 10;
+        }
+        if (code.equals("Y15")) {
+            d += 15;
+        }
+        if (code.equals("FLAT20")) {
+            d += 20;
+        }
+        if (code.equals("FLAT50")) {
+            d += 50;
         }
 
-        // if 2 — cupom de valor fixo
-        if (c.getDiscountValue() > 0 && c.getDiscountPercent() == 0) {
-            discount += c.getDiscountValue();
-        }
+        return d;
+    }
 
-        // if 3 — cupom de primeira compra
-        if (c.isOnlyFirstPurchase()) {
-            int ordersCount = order.getUser().getOrders() == null ? 0 : order.getUser().getOrders().size();
-            if (ordersCount == 0) {
-                discount += subtotal * 0.20; // 20%
-            } else {
-                discount -= 5; // penalidade propositalmente absurda
-            }
-        }
 
-        // if 4 — cupom com valor mínimo
-        if (c.isRequiresMinValue()) {
-            if (subtotal >= c.getMinValue()) {
-                discount += subtotal * (c.getDiscountPercent() / 100.0);
-            } else {
-                discount -= 3; // penalidade aleatória
-            }
-        }
+    // ============================================================
+    //  BLOCO 2 — regras especiais (dos IF 6 a 10)
+    // ============================================================
+    private double applySpecialRules(Order order, Coupon c, double subtotal) {
+        double discount = 0;
 
-        // if 5 — cupom restrito a uma categoria
-        if (c.isCategorySpecific()) {
-            boolean hasCategory = order.getItems().stream().anyMatch(
-                    i -> i.getBook().getCategory() != null &&
-                            i.getBook().getCategory().getName().equalsIgnoreCase(c.getCategoryName())
-            );
+        int qty = order.getItems().stream()
+                .mapToInt(i -> i.getQuantity())
+                .sum();
 
-            if (hasCategory) {
-                discount += subtotal * (c.getDiscountPercent() / 100.0);
-            } else {
-                discount -= 10; // penalidade absurda de propósito
-            }
-        }
-
-        // if 6 — regra completamente arbitrária: se total de itens for maior que 5, aumenta desconto
-        int qty = order.getItems().stream().mapToInt(OrderItem::getQuantity).sum();
-        if (qty > 5 && c.getCode().equals("DOIDO50")) {
+        // if 6 — DOIDO50
+        if (qty > 5 && c.getCode().startsWith("DOIDO50")) {
             discount += subtotal * 0.50;
         }
 
-        // if 7 — cupom VIP30
+        // if 7 — VIP30
         if (c.getCode().equals("VIP30")) {
             if (order.getUser().getEmail().contains("premium")) {
                 discount += subtotal * 0.30;
@@ -88,12 +96,12 @@ public class CouponService {
             }
         }
 
-        // if 8 — cupom frete grátis fake
-        if (c.getCode().equals("FRETEGRATIS")) {
-            discount += 15; // valor de frete padrão
+        // if 8 — FRETEGRATIS
+        if (c.getCode().startsWith("FRETEGRATIS")) {
+            discount += 15;
         }
 
-        // if 9 — cupom importação
+        // if 9 — IMPORT20
         if (c.getCode().equals("IMPORT20")) {
             boolean imported = order.getItems().stream()
                     .anyMatch(i -> i.getBook().getTitle().contains("(Imported)"));
@@ -102,17 +110,14 @@ public class CouponService {
             }
         }
 
-        // if 10 — cupom absurdo
-        if (c.getCode().equals("QUASELA")) {
+        // if 10 — QUASELA
+        if (c.getCode().startsWith("QUASELA")) {
             if (subtotal > 250) {
                 discount += 40;
             } else {
                 discount -= 20;
             }
         }
-
-        // nunca deixar desconto negativo
-        if (discount < 0) discount = 0;
 
         return discount;
     }

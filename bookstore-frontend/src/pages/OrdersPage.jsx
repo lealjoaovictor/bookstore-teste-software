@@ -5,11 +5,12 @@ import * as couponsApi from '../api/coupons'
 import { getBooks } from '../api/books'
 
 import CreateOrder from '../components/CreateOrder'
-import OrderDetails from "../components/OrderDetails";
+import OrderDetails from "../components/OrderDetails"
 
 export default function OrdersPage({ onNavigate, onSelectOrder }) {
   const [users, setUsers] = useState([])
   const [orders, setOrders] = useState([])
+  const [ordersWithUser, setOrdersWithUser] = useState([])
   const [coupons, setCoupons] = useState([])
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -18,37 +19,43 @@ export default function OrdersPage({ onNavigate, onSelectOrder }) {
   const [selectedOrder, setSelectedOrder] = useState(null)
 
   async function load() {
-    setLoading(true)
-    try {
-      const [u, o, c, b] = await Promise.all([
-        getUsers(),
-        ordersApi.getOrders(),
-        couponsApi.getCoupons(),
-        getBooks()
-      ])
+  setLoading(true)
+  try {
+    const [u, o, c, b] = await Promise.all([
+      getUsers(),
+      ordersApi.getOrders(),
+      couponsApi.getCoupons(),
+      getBooks()
+    ])
 
-      console.log("📌 ORDERS:", o)
+    console.log("📌 USERS:", u)
+    console.log("📌 ORDERS:", o)  // <<< aqui
+    console.log("📌 COUPONS:", c)
+    console.log("📌 BOOKS:", b)
 
-      setUsers(u || [])
-      setOrders(o || [])
-      setCoupons(c || [])
-      setBooks(b || [])
-
-    } catch (e) {
-      console.error("❌ ERRO NO LOAD()", e)
-    } finally {
-      setLoading(false)
-    }
+    setUsers(u || [])
+    setOrders(o || [])
+    setCoupons(c || [])
+    setBooks(b || [])
+  } catch (e) {
+    console.error("❌ ERRO NO LOAD()", e)
+  } finally {
+    setLoading(false)
   }
+}
+
 
   useEffect(() => { load() }, [])
 
-  const filteredOrders = selectedUser
-    ? orders.filter(o => {
-        const orderUserId = o?.user?.id ?? null
-        return String(orderUserId) === String(selectedUser)
-      })
-    : orders
+const filteredOrders = selectedUser
+  ? orders.filter(o => o?.user && String(o.user.id) === String(selectedUser))
+  : orders
+
+
+  console.log("selectedUser", selectedUser)
+console.log("orders", orders.map(o => o.user))
+console.log("filteredOrders", filteredOrders)
+
 
   return (
     <div>
@@ -61,7 +68,6 @@ export default function OrdersPage({ onNavigate, onSelectOrder }) {
 
       <div className="card mt-4 mb-3">
         <label className="small font-medium">Filtrar por usuário:</label>
-
         <select
           className="input mt-1"
           value={selectedUser}
@@ -101,9 +107,8 @@ export default function OrdersPage({ onNavigate, onSelectOrder }) {
 
                     <div className="small text-gray-500">
                       Status: {ord.status} • Total: R$ {ord.total}
-
-                      {ord.appliedCoupon && (
-                        <> • Cupom: <strong>{ord.appliedCoupon}</strong></>
+                      {ord.couponCode && (
+                        <> • Cupom: <strong>{ord.couponCode}</strong></>
                       )}
                     </div>
                   </div>

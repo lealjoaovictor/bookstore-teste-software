@@ -11,6 +11,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @EntityGraph(attributePaths = {
+            "user",            // <<< aqui
             "items",
             "items.book",
             "items.book.author"

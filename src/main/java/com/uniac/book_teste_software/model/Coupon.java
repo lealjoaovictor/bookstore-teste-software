@@ -9,6 +9,7 @@ public class Coupon {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String code;
     private Double discountValue; // valor fixo
     private Double discountPercent; // desconto percentual

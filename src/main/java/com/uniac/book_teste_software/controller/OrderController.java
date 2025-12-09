@@ -32,19 +32,9 @@ public class OrderController {
     @GetMapping
     @Transactional
     public List<Order> list() {
-        return orders.findAll().stream()
-                .map(o -> {
-                    Order dto = new Order();
-                    dto.setId(o.getId());
-                    dto.setStatus(o.getStatus());
-                    dto.setTotal(o.getTotal());
-                    dto.setItems(o.getItems());
-                    // NÃO incluí user
-                    return dto;
-                })
-                .toList();
-
+        return orders.findAll(); // já inclui o user, sem precisar criar novo Order
     }
+
 
     @PostMapping
     public Order create(@RequestBody Order order) {
