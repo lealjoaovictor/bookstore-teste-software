@@ -1,5 +1,6 @@
 com\uniac\book_teste_software\model\Category.class
 com\uniac\book_teste_software\model\Payment.class
+com\uniac\book_teste_software\controller\CategoryController.class
 com\uniac\book_teste_software\model\Cart.class
 com\uniac\book_teste_software\model\Order.class
 com\uniac\book_teste_software\model\Author.class

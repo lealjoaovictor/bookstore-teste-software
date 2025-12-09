@@ -9,6 +9,7 @@ export default function Navbar({ onNavigate, active }){
           <button className={'px-3 py-1 rounded ' + (active==='home'?'bg-gray-100':'')} onClick={()=>onNavigate('home')}>Home</button>
           <button className={'px-3 py-1 rounded ' + (active==='users'?'bg-gray-100':'')} onClick={()=>onNavigate('users')}>Users</button>
           <button className={'px-3 py-1 rounded ' + (active==='orders'?'bg-gray-100':'')} onClick={()=>onNavigate('orders')}>Orders</button>
+          <button className={'px-3 py-1 rounded ' + (active==='books'?'bg-gray-100':'')} onClick={()=>onNavigate('books')}>Books</button>
         </div>
         <div className="text-sm text-gray-500">Frontend · React + Vite</div>
       </div>

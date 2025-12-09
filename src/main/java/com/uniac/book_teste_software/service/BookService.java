@@ -166,5 +166,8 @@ public class BookService {
         return true; // 5
     } // 6
 
+    public Book save(Book book) {
+        return bookRepository.save(book);
+    }
 
 }
