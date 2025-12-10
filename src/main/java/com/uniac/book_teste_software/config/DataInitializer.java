@@ -20,7 +20,6 @@ public class DataInitializer {
             UserRepository users,
             OrderRepository orders,
             OrderItemRepository orderItems,
-            PaymentRepository payments,
             CouponRepository coupons
     ) {
         return args -> {
@@ -121,12 +120,6 @@ public class DataInitializer {
                 o1.setUser(admin);
                 o1.setStatus("PAID");
 
-                Payment p1 = new Payment();
-                p1.setMethod("CREDIT_CARD");
-                p1.setTransactionId("TX-ADMIN-001");
-                p1.setSuccessful(true);
-                o1.setPayment(p1);
-
                 OrderItem i1 = new OrderItem();
                 i1.setOrder(o1);
                 i1.setBook(hp);
@@ -142,12 +135,6 @@ public class DataInitializer {
                 Order o2 = new Order();
                 o2.setUser(john);
                 o2.setStatus("SHIPPED");
-
-                Payment p2 = new Payment();
-                p2.setMethod("PAYPAL");
-                p2.setTransactionId("TX-JOHN-002");
-                p2.setSuccessful(true);
-                o2.setPayment(p2);
 
                 OrderItem i2a = new OrderItem();
                 i2a.setOrder(o2);
