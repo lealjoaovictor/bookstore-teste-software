@@ -91,4 +91,12 @@ public class BasicCouponsTest {
         double d = couponService.applyCoupon(o, "FLAT50");
         assertEquals(50, d, 0.0001);
     }
+
+    @Test
+    void testInvalidCoupon() {
+        Order o = createOrder(150);
+        double d = couponService.applyCoupon(o, "CUPOM_INEXISTENTE");
+        assertEquals(0.0, d, 0.0001);
+    }
+
 }

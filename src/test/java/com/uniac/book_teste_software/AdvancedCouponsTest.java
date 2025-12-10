@@ -91,4 +91,11 @@ public class AdvancedCouponsTest {
         double d = service.applyCoupon(o, "PLATINUM");
         assertEquals(50.0, d, 0.0001);
     }
+
+    @Test
+    void testInvalidCoupon() {
+        Order o = createOrder(150);
+        double d = service.applyCoupon(o, "CUPOM_INEXISTENTE");
+        assertEquals(0.0, d, 0.0001);
+    }
 }
