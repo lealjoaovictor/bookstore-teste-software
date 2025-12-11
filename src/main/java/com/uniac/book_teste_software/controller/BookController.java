@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Endpoints para operações simples com livros.
- */
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -37,19 +34,19 @@ public class BookController {
     @Transactional
     public Book create(@RequestBody Book book) {
 
-        if (book.getAuthor() != null) {
-            var author = authorRepository.findById(book.getAuthor().getId())
-                    .orElseThrow();
+        if (book.getAuthor() != null) { // 1
+            var author = authorRepository.findById(book.getAuthor().getId()) // 2
+                    .orElseThrow(); // 3
             book.setAuthor(author);
         }
 
-        if (book.getCategory() != null) {
-            var category = categoryRepository.findById(book.getCategory().getId())
-                    .orElseThrow();
+        if (book.getCategory() != null) { // 4
+            var category = categoryRepository.findById(book.getCategory().getId()) // 5
+                    .orElseThrow(); // 6
             book.setCategory(category);
         }
 
-        return bookService.save(book);
-    }
+        return bookService.save(book); // 7
+    } // 8
 
 }

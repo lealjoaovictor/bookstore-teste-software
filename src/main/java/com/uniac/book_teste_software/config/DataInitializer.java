@@ -24,7 +24,7 @@ public class DataInitializer {
     ) {
         return args -> {
 
-            System.out.println("🚀 Inicializando dados fixos no H2...");
+            System.out.println("Inicializando dados fixos no H2...");
 
             // ===========================
             // USERS
@@ -45,7 +45,6 @@ public class DataInitializer {
                 u3.setEmail("joao@example.com");
                 users.save(u3);
 
-                System.out.println("👤 Usuários criados: admin, john, mary");
             }
 
             // ===========================
@@ -100,7 +99,7 @@ public class DataInitializer {
                 clean.setCategory(tech);
                 books.save(clean);
 
-                System.out.println("📚 Livros criados: HP, GOT, Clean Code");
+                System.out.println("Livros criados: HP, GOT, Clean Code");
             }
 
             // =====================================
@@ -156,7 +155,7 @@ public class DataInitializer {
 
                 orders.save(o2);
 
-                System.out.println("🛒 Orders de teste criadas com sucesso!");
+                System.out.println("Orders de teste criadas com sucesso!");
             }
 
             if (coupons.count() == 0) {
@@ -195,7 +194,7 @@ public class DataInitializer {
                 coupons.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10));
             }
 
-            System.out.println("✅ Inicialização concluída!");
+            System.out.println("Inicialização concluída!");
         };
     }
 }

@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Serviço para operações relacionadas a livros.
- */
 @Service
 public class BookService {
     private final BookRepository bookRepository;
@@ -18,9 +15,6 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    /**
-     * Busca livros por título (contendo q). Se q for nulo ou vazio, retorna todos.
-     */
     public List<Book> search(String q) {
         if (q == null || q.trim().isEmpty()) {
             return bookRepository.findAll();

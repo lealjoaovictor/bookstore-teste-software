@@ -32,58 +32,45 @@ public class OrderController {
     @GetMapping
     @Transactional
     public List<Order> list() {
-        return orders.findAll(); // já inclui o user, sem precisar criar novo Order
+        return orders.findAll();
     }
 
 
     @PostMapping
     public Order create(@RequestBody Order order) {
 
-        // inicializa items se estiver null
-        if (order.getItems() == null) {
-            order.setItems(new HashSet<>());
+        if (order.getItems() == null) { // 1
+            order.setItems(new HashSet<>()); // 2
         }
 
-        // carregar usuário
-        var user = users.findById(order.getUser().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        var user = users.findById(order.getUser().getId()) // 3
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado")); // 4
         order.setUser(user);
 
-        // carregar itens com seus livros reais
-        for (OrderItem item : order.getItems()) {
+        for (OrderItem item : order.getItems()) { // 5
 
-            if (item.getBook() == null || item.getBook().getId() == null) {
-                throw new IllegalArgumentException("OrderItem precisa ter book.id");
+            if (item.getBook() == null || item.getBook().getId() == null) { // 6 // 7
+                throw new IllegalArgumentException("OrderItem precisa ter book.id"); // 8
             }
 
-            var book = books.findById(item.getBook().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado: " + item.getBook().getId()));
+            var book = books.findById(item.getBook().getId()) // 9
+                    .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado: " + item.getBook().getId())); // 10
             item.setBook(book);
             item.setOrder(order);
-        }
+        } // 11
 
-        // ================================
-        // CALCULA SUBTOTAL
-        // ================================
-        double subtotal = order.getItems().stream()
+        double subtotal = order.getItems().stream() // 12
                 .mapToDouble(i -> i.getBook().getPrice() * i.getQuantity())
                 .sum();
 
-        // ================================
-        // APLICA CUPOM
-        // ================================
         double discount = couponService.applyCoupon(order, order.getCouponCode());
 
-        // ================================
-        // CALCULA TOTAL FINAL
-        // ================================
         double finalValue = Math.max(0, subtotal - discount);
 
         order.setTotal(finalValue);
 
-        // salva o pedido com o preço final
-        return orders.save(order);
-    }
+        return orders.save(order); // 13
+    } // 14
 
     @GetMapping("/{id}")
     public Order getById(@PathVariable Long id) {
